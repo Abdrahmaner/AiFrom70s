@@ -1,4 +1,7 @@
-const API_KEY = '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';
+// ❌ REMOVE THIS LINE - API key is now secure on Vercel
+// const API_KEY = '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';
+
+// ✅ Use your own secure API endpoint instead
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
 export interface ChatMessage {
@@ -20,33 +23,21 @@ export class AIService {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${API_KEY}`,
-          // ✅ OpenRouter requires this header (identifies your app)
-          'HTTP-Referer': 'http://localhost:3000', // change to your website if you deploy
-          'X-Title': 'My AI App',                  // optional title for dashboard stats
+          // ✅ No Authorization header - your API route handles security
         },
         body: JSON.stringify({
-          model: 'openai/gpt-4o-mini', // ✅ OpenRouter model naming
-          messages: [
-            {
-              role: 'system',
-              content: 'You are a helpful AI assistant. Provide clear, concise, and helpful responses.'
-            },
-            ...messages
-          ],
-          max_tokens: 1000,
-          temperature: 0.7,
-          stream: false,
+          model: 'openai/gpt-4o-mini',
+          messages: messages,
         }),
       });
 
       if (!response.ok) {
-        const raw = await response.text();
-        throw new Error(`API Error: ${response.status} - ${raw || 'Unknown error'}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `API Error: ${response.status} - ${response.statusText}`);
       }
 
       const data = await response.json();
-
+      
       if (!data.choices || !data.choices[0] || !data.choices[0].message) {
         throw new Error('Invalid response format from API');
       }
@@ -54,14 +45,12 @@ export class AIService {
       return data.choices[0].message.content;
     } catch (error) {
       console.error('AI Service Error:', error);
-
       if (error instanceof Error) {
         if (error.message.includes('fetch')) {
           throw new Error('Network error. Please check your connection and try again.');
         }
         throw error;
       }
-
       throw new Error('An unexpected error occurred. Please try again.');
     }
   }
