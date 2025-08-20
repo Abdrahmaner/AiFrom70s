@@ -122,7 +122,7 @@ function App() {
                   <Monitor size={32} className="text-green-400 animate-terminal-flicker" />
                   <div>
                     <h1 className="text-2xl font-bold vintage-text terminal-text">70s AI</h1>
-                    <p className="text-xs amber-text">ARTIFICIAL INTELLIGENCE TERMINAL v1.0</p>
+                    <p className="text-xs amber-text">ARTIFICIAL INTELLIGENCE TERMINAL v1.0 {process.env.OPENROUTER_API_KEY}</p>
                   </div>
                 </div>
               </div>
