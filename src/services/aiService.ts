@@ -1,5 +1,3 @@
-
-// ✅ Use your own secure API endpoint instead
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
 export interface ChatMessage {
@@ -21,21 +19,32 @@ export class AIService {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // ✅ No Authorization header - your API route handles security
+          'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`, // ✅ use env variable
+          'HTTP-Referer': 'http://localhost:3000', // change to your website if you deploy
+          'X-Title': 'My AI App',
         },
         body: JSON.stringify({
           model: 'openai/gpt-4o-mini',
-          messages: messages,
+          messages: [
+            {
+              role: 'system',
+              content:
+                'You are a helpful AI assistant. Provide clear, concise, and helpful responses.',
+            },
+            ...messages,
+          ],
+          max_tokens: 1000,
+          temperature: 0.7,
+          stream: false,
         }),
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `API Error: ${response.status} - ${response.statusText}`);
+        const raw = await response.text();
+        throw new Error(`API Error: ${response.status} - ${raw || 'Unknown error'}`);
       }
 
       const data = await response.json();
-      
       if (!data.choices || !data.choices[0] || !data.choices[0].message) {
         throw new Error('Invalid response format from API');
       }
@@ -53,19 +62,14 @@ export class AIService {
     }
   }
 
-  async sendMessage(
-    userMessage: string,
-    chatHistory: ChatMessage[]
-  ): Promise<string> {
-    // Convert chat history to API format
+  async sendMessage(userMessage: string, chatHistory: ChatMessage[]): Promise<string> {
     const apiMessages: ApiMessage[] = chatHistory
-      .slice(-10) // Keep only last 10 messages for context
+      .slice(-10)
       .map((msg) => ({
         role: msg.isUser ? 'user' : 'assistant',
         content: msg.content,
       }));
 
-    // Add the current user message
     apiMessages.push({
       role: 'user',
       content: userMessage,
