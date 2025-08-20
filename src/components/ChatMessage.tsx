@@ -21,7 +21,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onCopy, isCopied }) 
           <div className={`flex items-center gap-2 ${message.isUser ? 'flex-row-reverse' : 'flex-row'}`}>
             {message.isUser ? (
               <>
-                <span className="text-xs amber-text vintage-text">USER {process.env.OPENROUTER_API_KEY} </span>
+                <span className="text-xs amber-text vintage-text">USER  </span>
                 <User size={16} className="text-amber-400" />
               </>
             ) : (
