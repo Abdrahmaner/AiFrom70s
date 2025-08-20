@@ -1,5 +1,3 @@
-// ❌ REMOVE THIS LINE - API key is now secure on Vercel
-// const API_KEY = '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';
 
 // ✅ Use your own secure API endpoint instead
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
