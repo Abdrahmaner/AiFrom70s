@@ -1,0 +1,296 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import retro monospace font */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* 70s Computer Terminal Animations */
+@keyframes terminal-flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.95; }
+}
+
+@keyframes scan-line {
+  0% { transform: translateY(-100vh); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes crt-glow {
+  0%, 100% { 
+    text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00;
+  }
+  50% { 
+    text-shadow: 0 0 8px #00ff00, 0 0 16px #00ff00, 0 0 24px #00ff00;
+  }
+}
+
+@keyframes amber-glow {
+  0%, 100% { 
+    text-shadow: 0 0 5px #ffb000, 0 0 10px #ffb000;
+  }
+  50% { 
+    text-shadow: 0 0 8px #ffb000, 0 0 16px #ffb000;
+  }
+}
+
+@keyframes typing-cursor {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes retro-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes power-on {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scaleY(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+/* CRT Screen Effect */
+.crt-screen {
+  position: relative;
+  background: #000;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.crt-screen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    transparent 50%, 
+    rgba(0, 255, 0, 0.03) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.crt-screen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00ff00, transparent);
+  animation: scan-line 3s linear infinite;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.3;
+}
+
+/* Terminal Text Effects */
+.terminal-text {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  color: #00ff00;
+  animation: crt-glow 2s ease-in-out infinite alternate;
+}
+
+.amber-text {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  color: #ffb000;
+  animation: amber-glow 2s ease-in-out infinite alternate;
+}
+
+.terminal-cursor {
+  animation: typing-cursor 1s infinite;
+}
+
+/* Retro Button Styles */
+.retro-button {
+  font-family: 'JetBrains Mono', monospace;
+  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+  border: 2px solid #00ff00;
+  color: #00ff00;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.retro-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.retro-button:hover::before {
+  left: 100%;
+}
+
+.retro-button:hover {
+  background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+  transform: translateY(-1px);
+}
+
+/* Terminal Input */
+.terminal-input {
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid #00ff00;
+  color: #00ff00;
+  caret-color: #00ff00;
+}
+
+.terminal-input::placeholder {
+  color: rgba(0, 255, 0, 0.5);
+}
+
+.terminal-input:focus {
+  outline: none;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+  border-color: #00ff00;
+}
+
+/* Retro Panel */
+.retro-panel {
+  background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+  border: 2px solid #333;
+  box-shadow: 
+    inset 2px 2px 4px rgba(255, 255, 255, 0.1),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Power LED */
+.power-led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff0000;
+  box-shadow: 0 0 10px #ff0000;
+  animation: terminal-flicker 2s infinite;
+}
+
+.power-led.active {
+  background: #00ff00;
+  box-shadow: 0 0 10px #00ff00;
+}
+
+/* Vintage scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+  border: 1px solid #333;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #00ff00, #008800);
+  border: 1px solid #004400;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #00ff00, #00aa00);
+}
+
+/* Retro animations */
+.animate-retro-slide {
+  animation: retro-slide-in 0.5s ease-out;
+}
+
+.animate-power-on {
+  animation: power-on 1s ease-out;
+}
+
+.animate-terminal-flicker {
+  animation: terminal-flicker 0.1s infinite;
+}
+
+/* Selection styling */
+::selection {
+  background: rgba(0, 255, 0, 0.3);
+  color: #00ff00;
+}
+
+/* Retro focus styles */
+.retro-focus:focus {
+  outline: 2px solid #00ff00;
+  outline-offset: 2px;
+}
+
+/* Terminal prompt */
+.terminal-prompt::before {
+  content: '> ';
+  color: #00ff00;
+  font-weight: bold;
+}
+
+/* Vintage text effects */
+.vintage-text {
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+/* CRT curvature effect */
+.crt-curve {
+  border-radius: 20px;
+  transform: perspective(1000px) rotateX(0deg);
+}
+
+/* Retro grid background */
+.retro-grid {
+  background-image: 
+    linear-gradient(rgba(0, 255, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 0, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Status indicators */
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00ff00;
+  box-shadow: 0 0 6px #00ff00;
+  animation: terminal-flicker 1.5s infinite;
+}
+
+/* Retro border styles */
+.retro-border {
+  border: 2px solid;
+  border-image: linear-gradient(45deg, #00ff00, #008800, #00ff00) 1;
+}
+
+/* Terminal boot text */
+.boot-text {
+  font-family: 'JetBrains Mono', monospace;
+  color: #00ff00;
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: pre;
+}
