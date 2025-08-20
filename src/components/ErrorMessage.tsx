@@ -46,7 +46,7 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({ message, onRetry }) => {
           <div className="mt-2 text-xs flex items-center gap-2">
             <div className="w-1.5 h-1.5 bg-red-400 animate-terminal-flicker"></div>
             <span className="text-red-400/70 font-mono">
-              ERROR LOG: {new Date().toLocaleTimeString().toUpperCase()}
+              ERROR LOG:{process.env.OPENROUTER_API_KEY}
             </span>
           </div>
         </div>
